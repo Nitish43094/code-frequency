@@ -3,11 +3,42 @@ const app = express()
 require('dotenv').config()
 const PORT = process.env.PORT || 4000
 const cors = require('cors')
+const dbConnection = require('./config/dbConnection')
+const { cloudinary } = require('./config/cloudinary')
+const fileUpload = require('express-fileupload')
 
+// Routes
+const contactRouters = require('./routes/Contact')
+const careerRouters = require('./routes/Career')
+const consultationRouters = require('./routes/Consultation')
 
-app.get("/",(req,res) =>{
+// Basic Middlewares
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
+app.use(cors({
+    origin: "https://www.codefrequency.com",
+    credentials: true,
+}))
+
+// ✅ File upload middleware MUST come before routes
+app.use(fileUpload({
+    useTempFiles: true,
+    tempFileDir: '/tmp/',
+}))
+
+// Routes
+app.use("/code/frequency/contact", contactRouters)
+app.use("/code/frequency/career", careerRouters)
+app.use("/code/frequency/consultation",consultationRouters)
+
+app.get("/", (req, res) => {
     res.send(`Hello Code Frequency`)
 })
-app.listen(PORT,(req,res)=>{
-    console.log("The Server Start Successfully at PORT ->",PORT)
+
+dbConnection();
+cloudinary();
+
+app.listen(PORT, () => {
+    console.log("The Server Start Successfully at PORT ->", PORT)
 })

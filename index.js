@@ -16,8 +16,12 @@ const consultationRouters = require('./routes/Consultation')
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+const allowedOrigins = [
+    "https://www.codefrequency.com",
+    "http://localhost:5173",
+];
 app.use(cors({
-    origin: "https://www.codefrequency.com",
+    origin: allowedOrigins,
     credentials: true,
 }))
 

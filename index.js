@@ -18,6 +18,7 @@ app.use(express.urlencoded({ extended: true }))
 
 const allowedOrigins = [
     "https://codefrequency.com",
+    "https://www.codefrequency.com"
     // "http://localhost:5173",
 ];
 app.use(cors({
